@@ -9,12 +9,18 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
+
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Çaktivizo CSRF për endpoint-et
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/**").permitAll() // Lejo akses të lirë për këtë endpoint
-                        .anyRequest().authenticated() // Kërko autentikim për të gjitha endpoint-et e tjera
+                        .requestMatchers(
+                                "/users/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+                        .anyRequest().authenticated()
                 );
         return http.build();
     }
